@@ -1,4 +1,3 @@
-const axios = require("axios");
 const URLS = require("./constants");
 const Table = require("cli-table");
 const color = require("colors");
