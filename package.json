@@ -1,7 +1,7 @@
 {
   "name": "canis_lupus",
   "version": "1.0.0",
-  "description": "Just a CLI tool",
+  "description": "Just a CLI tool to upload files to Slack via cli",
   "main": "bin/index.js",
   "bin": {
     "canis_lupus": "./bin/index.js"
