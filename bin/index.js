@@ -1,8 +1,6 @@
 #! /usr/bin/node
-const path = `${__dirname}/../.env`;
-const result = require("dotenv").config({ path });
+const result = require("dotenv").config({ path: `${__dirname}/../.env` });
 const color = require("colors");
-
 const readline = require("readline").createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -33,6 +31,21 @@ if (result.error) {
   return 0;
 }
 
+let ACCESS_TOKEN = process.env.O_AUTH_ACCESS_TOKEN;
+
+if (!ACCESS_TOKEN) {
+  readline.question(
+    `Set O_AUTH_ACCESS_TOKEN. \nYou only need to set this once. \nType the token after => `,
+    token => {
+      if (token) {
+        util.saveToken(token);
+      }
+      readline.close();
+    }
+  );
+  return 0;
+}
+
 const yargsOptions = yargs
   .option("p", {
     alias: "path",
@@ -50,4 +63,9 @@ const yargsOptions = yargs
 const file_path = yargsOptions.path;
 const message = yargsOptions.message;
 
-slack.upload(file_path, message);
+if (file_path !== "") {
+  slack.upload(file_path, message);
+} else {
+  console.error(color.red("Invalid path!"));
+  return 1;
+}

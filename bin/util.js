@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+const color = require("colors");
 const envPath = `${__dirname}/../.env`;
 
 module.exports.addEnv = () => {
@@ -8,18 +8,13 @@ module.exports.addEnv = () => {
 };
 
 module.exports.saveToken = token => {
-  let buffer = new Buffer(`O_AUTH_TOKEN="${token}"`);
+  const content = `O_AUTH_ACCESS_TOKEN="${token}"`;
 
-  fs.open(envPath, "w", function(err, fd) {
-    if (err) {
-      throw "could not open file: " + err;
-    }
+  fs.writeFile(envPath, content, err => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
 
-    fs.write(fd, buffer, 0, buffer.length, null, function(err) {
-      if (err) throw "error writing file: " + err;
-      fs.close(fd, function() {
-        console.log("wrote the file successfully");
-      });
-    });
+    // success case, the file was saved
+    console.log(color.green("Success!"));
   });
 };
